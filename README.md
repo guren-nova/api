@@ -1,32 +1,29 @@
 # FortifyBot API
 
-```markdown
-# FortifyBot API
-
 FortifyBot APIへようこそ！このAPIは、メッセージ内に不適切なワードが含まれているかどうかをチェックするシンプルな方法を提供します。レートリミットとメッセージのサニタイズ機能を備えており、安全に利用できます。
 
 ## API エンドポイント
 
 ### メッセージ処理
-
-このAPIの主なエンドポイントは次の通りです：
-
-```
-https://www.fortifybot.xyz/api/v1/words.php/?message={message}
 ```
 
-### パラメーター
+- このAPIの主なエンドポイントは次の通りです：
+
+- https://www.fortifybot.xyz/api/v1/words.php/?message={message}
+```
+
+パラメーター
 - message: チェックしたいメッセージ。このパラメーターは必須で、特殊文字やスペースを含む場合はURLエンコードしてください。
+
+```
 
 ### 使用例
 
-```
-https://www.fortifybot.xyz/api/v1/words.php/?message=Hello%20World
-```
+- https://www.fortifybot.xyz/api/v1/words.php/?message=Hello%20World
 
 ### レスポンス
 
-APIは、メッセージに不適切なワードが含まれているかどうかを示すJSONオブジェクトを返します。
+- APIは、メッセージに不適切なワードが含まれているかどうかを示すJSONオブジェクトを返します。
 
 #### 成功した場合のレスポンス
 
@@ -38,9 +35,9 @@ APIは、メッセージに不適切なワードが含まれているかどう�
 
 #### エラーが発生した場合のレスポンス
 
-メッセージが提供されていない場合や不正なリクエストが送信された場合、エラーメッセージが返されます。
+- メッセージが提供されていない場合や不正なリクエストが送信された場合、エラーメッセージが返されます。
 
-- **メッセージがない場合**（400 Bad Request）
+####  **メッセージがない場合**（400 Bad Request）
 
 ```json
 {
