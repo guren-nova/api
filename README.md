@@ -97,7 +97,7 @@ response = requests.get(url)
 if response.status_code == 200:
     data = response.json()
     if data['contains_bad_words']:
-        print("メッセージに悪い言葉が含まれています。")
+        print("メッセージに不適切なワードが含まれています。")
     else:
         print("メッセージは問題ありません。")
 else:
@@ -116,7 +116,7 @@ fetch(url)
   .then(response => response.json())
   .then(data => {
     if (data.contains_bad_words) {
-      console.log("メッセージに悪い言葉が含まれています。");
+      console.log("メッセージに不適切なワードが含まれています。");
     } else {
       console.log("メッセージは問題ありません。");
     }
