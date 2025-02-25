@@ -5,21 +5,18 @@ FortifyBot APIへようこそ！このAPIは、メッセージ内に不適切な
 ## API エンドポイント
 
 ### メッセージ処理
-```
 
 - このAPIの主なエンドポイントは次の通りです：
-
-- https://www.fortifybot.xyz/api/v1/words.php/?message={message}
 ```
-
-パラメーター
+https://www.fortifybot.xyz/api/v1/words.php/?message={message}
+```
+### パラメーター
 - message: チェックしたいメッセージ。このパラメーターは必須で、特殊文字やスペースを含む場合はURLエンコードしてください。
 
-```
-
 ### 使用例
-
+```
 - https://www.fortifybot.xyz/api/v1/words.php/?message=Hello%20World
+```
 
 ### レスポンス
 
