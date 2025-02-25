@@ -1,7 +1,5 @@
 # fortify-api
 
-以下は、あなたが提供したAPIに関連する `README.md` ファイルの例です。この内容をそのまま `README.md` に貼り付けて使ってください。
-
 ```markdown
 # FortifyBot API
 
