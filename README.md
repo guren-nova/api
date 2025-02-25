@@ -1,51 +1,91 @@
-# fortify-api
+# FortifyBot API
 
 ```markdown
 # FortifyBot API
 
-Welcome to the FortifyBot API! This API provides a powerful tool for processing messages and detecting potentially harmful content. The FortifyBot API can be easily integrated into your Discord bot or other applications to enhance their security and functionality.
+**FortifyBot API**へようこそ！このAPIは、メッセージ内に悪い言葉が含まれているかどうかをチェックするシンプルな方法を提供します。レートリミットとメッセージのサニタイズ機能を備えており、安全に利用できます。
 
-## API Endpoint
+## API エンドポイント
 
-### Message Processing
+### メッセージ処理
 
-The primary endpoint for this API is:
+このAPIの主なエンドポイントは次の通りです：
 
 ```
 https://www.fortifybot.xyz/api/v1/words.php/?message={message}
 ```
 
-### Parameters
-- `message`: The message you want to process. This parameter is required and should be URL-encoded if it contains special characters or spaces.
+### パラメーター
+- `message`: チェックしたいメッセージ。このパラメーターは必須で、特殊文字やスペースを含む場合はURLエンコードしてください。
 
-### Example Request
+### 使用例
+
 ```
 https://www.fortifybot.xyz/api/v1/words.php/?message=Hello%20World
 ```
 
-### Response
-The API will respond with a JSON object containing the results of the message analysis. The structure of the response might look like this:
+### レスポンス
+
+APIは、メッセージに悪い言葉が含まれているかどうかを示すJSONオブジェクトを返します。
+
+#### 成功した場合のレスポンス
 
 ```json
 {
-  "status": "success",
-  "message": "Hello World",
-  "is_safe": true,
-  "warnings": []
+  "contains_bad_words": false
 }
 ```
 
-#### Response Fields
-- `status`: Indicates the status of the API request (`success` or `error`).
-- `message`: The message that was processed.
-- `is_safe`: A boolean value indicating whether the message is considered safe or not.
-- `warnings`: An array containing any warnings or issues detected in the message (if applicable).
+#### エラーが発生した場合のレスポンス
 
-## Usage
+メッセージが提供されていない場合や不正なリクエストが送信された場合、エラーメッセージが返されます。
 
-To use the FortifyBot API, simply make an HTTP GET request to the provided endpoint with your message as a query parameter.
+- **メッセージがない場合**（400 Bad Request）
 
-### Example in Python:
+```json
+{
+  "error": "メッセージが必要です"
+}
+```
+
+- **レートリミットを超えた場合**（429 Too Many Requests）
+
+```json
+{
+  "error": "レートリミットを超えました。しばらくしてから再試行してください。"
+}
+```
+
+- **不正なリクエストメソッドの場合**（405 Method Not Allowed）
+
+```json
+{
+  "error": "不正なリクエストメソッドです"
+}
+```
+
+### レートリミット
+
+このAPIにはレートリミットが設定されており、過度なリクエストを防ぎます。レートリミットは以下の通りです：
+
+- 1秒あたり最大2リクエストまで。
+
+レートリミットを超えた場合は、`429 Too Many Requests` のレスポンスが返され、しばらく後に再試行するように指示されます。
+
+### メッセージのサニタイズ
+
+APIは、入力メッセージを自動的にサニタイズします。これにより、次の処理が行われます：
+
+- HTMLタグの削除
+- 特殊文字のHTMLエンティティへの変換
+
+これにより、クロスサイトスクリプティング（XSS）攻撃を防ぎます。
+
+## 使用方法
+
+FortifyBot APIを使用するには、上記のエンドポイントにGETリクエストを送信し、メッセージをクエリパラメーターとして渡します。
+
+### Pythonでの使用例：
 
 ```python
 import requests
@@ -56,15 +96,15 @@ response = requests.get(url)
 
 if response.status_code == 200:
     data = response.json()
-    if data['is_safe']:
-        print("Message is safe.")
+    if data['contains_bad_words']:
+        print("メッセージに悪い言葉が含まれています。")
     else:
-        print("Message contains potential issues.")
+        print("メッセージは問題ありません。")
 else:
-    print("Error with the API request.")
+    print("APIリクエストにエラーが発生しました。")
 ```
 
-### Example in JavaScript (Node.js):
+### Node.js（JavaScript）での使用例：
 
 ```javascript
 const fetch = require('node-fetch');
@@ -75,27 +115,27 @@ const url = `https://www.fortifybot.xyz/api/v1/words.php/?message=${encodeURICom
 fetch(url)
   .then(response => response.json())
   .then(data => {
-    if (data.is_safe) {
-      console.log("Message is safe.");
+    if (data.contains_bad_words) {
+      console.log("メッセージに悪い言葉が含まれています。");
     } else {
-      console.log("Message contains potential issues.");
+      console.log("メッセージは問題ありません。");
     }
   })
   .catch(error => {
-    console.error('Error:', error);
+    console.error('エラー:', error);
   });
 ```
 
-## License
+## ライセンス
 
-This project is licensed under the terms of the custom license. See the [LICENSE](./LICENSE) file for more information.
+このプロジェクトは、カスタムライセンスのもとで提供されています。詳細については、[LICENSE](./LICENSE) ファイルをご覧ください。
 
-## Contact
+## お問い合わせ
 
-For questions or support, please reach out to [your-email@example.com].
+質問やサポートが必要な場合は、[your-email@example.com] までご連絡ください。
 
 ```
 
 ---
 
-この `README.md` では、FortifyBot APIのエンドポイントに関する説明や使用方法、サンプルコードなどを提供しています。もちろん、APIのレスポンス形式や詳細に合わせてカスタマイズできますので、必要に応じて変更して使ってください。
+この日本語の `README.md` には、APIの基本的な使い方、エンドポイント、レスポンス例、レートリミット、エラーメッセージの説明が含まれています。日本語での説明を加えることで、より多くの日本語ユーザーにとってわかりやすい内容になっています。
